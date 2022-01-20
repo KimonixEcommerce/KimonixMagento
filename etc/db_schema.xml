@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="kimonix_sync" resource="default" engine="innodb" comment="Kimonix Sync Data">
+        <column xsi:type="int" name="sync_id" unsigned="true" nullable="false" identity="true" comment="Sync Item ID"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" identity="false" default="0" comment="Store ID"/>
+        <column xsi:type="varchar" name="entity_type" length="20" nullable="false" comment="Entity Type"/>
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="false" default="0" comment="Entity ID"/>
+        <column xsi:type="smallint" name="sync_flag" unsigned="true" nullable="false" identity="false" default="0" comment="Sync Flag"/>
+        <column xsi:type="datetime" name="sync_date" on_update="false" nullable="false" comment="Sync Date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="sync_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="KIMONIX_SYNC_STORE_ID_ENTITY_TYPE_ENTITY_ID">
+            <column name="store_id"/>
+            <column name="entity_type"/>
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+    <table name="kimonix_sync_sales" resource="sales" engine="innodb" comment="Kimonix Sync Data">
+        <column xsi:type="int" name="sync_id" unsigned="true" nullable="false" identity="true" comment="Sync Item ID"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" identity="false" default="0" comment="Store ID"/>
+        <column xsi:type="varchar" name="entity_type" length="20" nullable="false" comment="Entity Type"/>
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="false" default="0" comment="Entity ID"/>
+        <column xsi:type="smallint" name="sync_flag" unsigned="true" nullable="false" identity="false" default="0" comment="Sync Flag"/>
+        <column xsi:type="datetime" name="sync_date" on_update="false" nullable="false" comment="Sync Date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="sync_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="KIMONIX_SYNC_SALES_STORE_ID_ENTITY_TYPE_ENTITY_ID">
+            <column name="store_id"/>
+            <column name="entity_type"/>
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

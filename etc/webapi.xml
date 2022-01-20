@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<!-- GET kimonix/authorize-->
+	<route method="GET" url="/V1/kimonix/authorize">
+		<service class="Kimonix\Kimonix\Api\AuthorizeInterface" method="authorize"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ GET kimonix/authorize -->
+	<!-- GET kimonix/reset_sync_flags/:entityType-->
+	<route method="POST" url="/V1/kimonix/reset_sync_flags/:entityType">
+		<service class="Kimonix\Kimonix\Api\KimonixInterface" method="resetSyncFlags"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ GET kimonix/reset_sync_flags/:entityType -->
+	<!-- GET kimonix/set_kimonix_api_url-->
+	<route method="POST" url="/V1/kimonix/set_kimonix_api_url">
+		<service class="Kimonix\Kimonix\Api\KimonixInterface" method="setKimonixApiUrl"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ GET kimonix/set_kimonix_api_url -->
+	<!-- GET kimonix/categories-->
+	<route method="GET" url="/V1/kimonix/categories">
+		<service class="Kimonix\Kimonix\Api\CategoriesInterface" method="getCategories"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ GET kimonix/categories -->
+	<!-- POST kimonix/categories-->
+	<route method="POST" url="/V1/kimonix/categories">
+		<service class="Kimonix\Kimonix\Api\CategoriesInterface" method="postCategories"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ POST kimonix/categories -->
+	<!-- GET kimonix/category/:id/products-->
+	<route method="GET" url="/V1/kimonix/category/:id/products">
+		<service class="Kimonix\Kimonix\Api\CategoryInterface" method="getProducts"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ GET kimonix/category/:id/products -->
+	<!-- POST kimonix/category/:id/products-->
+	<route method="POST" url="/V1/kimonix/category/:id/products">
+		<service class="Kimonix\Kimonix\Api\CategoryInterface" method="postProducts"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ POST kimonix/category/:id/products -->
+	<!-- POST kimonix/category/:id/control/:kimonixControl-->
+	<route method="POST" url="/V1/kimonix/category/:id/control/:kimonixControl">
+		<service class="Kimonix\Kimonix\Api\CategoryInterface" method="setKimonixAttributes"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<!--/ POST kimonix/category/:id/control/:kimonixControl-->
+</routes>

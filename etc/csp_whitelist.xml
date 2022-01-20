@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="kimonix_main" type="host">kimonix.com</value>
+                <value id="kimonix_wildcard" type="host">*.kimonix.com</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="kimonix_main" type="host">kimonix.com</value>
+                <value id="kimonix_wildcard" type="host">*.kimonix.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="kimonix_main" type="host">kimonix.com</value>
+                <value id="kimonix_wildcard" type="host">*.kimonix.com</value>
+            </values>
+        </policy>
+        <policy id="form-action">
+            <values>
+                <value id="kimonix_main" type="host">kimonix.com</value>
+                <value id="kimonix_wildcard" type="host">*.kimonix.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="kimonix_main" type="host">kimonix.com</value>
+                <value id="kimonix_wildcard" type="host">*.kimonix.com</value>
+                <value id="data" type="host">data:</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="kimonix_main" type="host">kimonix.com</value>
+                <value id="kimonix_wildcard" type="host">*.kimonix.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

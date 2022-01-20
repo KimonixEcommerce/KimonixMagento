@@ -1,0 +1,27 @@
+{
+    "name": "kimonix/magento2-module-kimonix",
+    "description": "Kimonix Module For Magento 2",
+    "require": {
+        "php": ">=5.6"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "authors": [{
+        "name": "Pniel Cohen (Trus)",
+        "email": "pini.trus@gmail.com",
+        "role": "Developer",
+        "homepage": "https://www.trus.co.il/"
+    }],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Kimonix\\Kimonix\\": ""
+        }
+    }
+}

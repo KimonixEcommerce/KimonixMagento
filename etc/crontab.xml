@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="kimonix_kimonix">
+        <job name="kimonix_store_update" instance="Kimonix\Kimonix\Model\Jobs\StoreUpdate" method="execute">
+            <schedule>*/10 * * * *</schedule>
+        </job>
+        <job name="kimonix_products_sync" instance="Kimonix\Kimonix\Model\Jobs\ProductsSync" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="kimonix_orders_sync" instance="Kimonix\Kimonix\Model\Jobs\OrdersSync" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+    </group>
+</config>

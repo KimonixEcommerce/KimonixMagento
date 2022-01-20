@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <kimonix>
+            <general_settings>
+                <enabled>0</enabled>
+                <debug>0</debug>
+            </general_settings>
+            <sync_settings>
+                <orders_sync_limit>1000</orders_sync_limit>
+                <products_sync_limit>1000</products_sync_limit>
+            </sync_settings>
+        </kimonix>
+    </default>
+</config>

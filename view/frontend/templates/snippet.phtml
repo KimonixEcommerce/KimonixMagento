@@ -1,0 +1,27 @@
+<?php
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+
+if (!$block->isEnabled() || !($scriptUrl = $block->getKimonixJsUrl())) {
+    return;
+}
+?>
+<!-- Kimonix - Script Loader -->
+<script>
+(function  () {
+    window.kimonixData = <?php echo $block->getSnippetJsonData(); ?>;
+    console.log(window.kimonixData);
+    document.addEventListener("DOMContentLoaded", function() {
+        var kimonixJs = document.createElement('script');
+        kimonixJs.src = '<?php echo $scriptUrl; ?>';
+        document.body.appendChild(kimonixJs);
+    });
+})();
+</script>
+<!--/ Kimonix - Script Loader -->

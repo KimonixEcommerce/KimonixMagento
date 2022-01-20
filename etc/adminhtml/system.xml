@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<tab id="kimonix" translate="label" sortOrder="400">
+            <label>Kimonix</label>
+		</tab>
+		<section id="kimonix" showInDefault="1"  showInWebsite="0" showInStore="0" sortOrder="20" translate="label">
+			<label>Settings</label>
+			<tab>kimonix</tab>
+			<resource>Kimonix_Kimonix::config</resource>
+			<group id="general_settings" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="10" translate="label">
+				<label>General Settings</label>
+				<field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+					<config_path>kimonix/general_settings/enabled</config_path>
+                </field>
+				<field id="debug" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Debug Mode Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+					<config_path>kimonix/general_settings/debug</config_path>
+					<comment><![CDATA[Enable debug mode in order to log Kimonix related processes<br>*log file: {MAGENTO-ROOT-DIR}/var/log/kimonix_kimonix.log.]]></comment>
+                </field>
+				<field id="kimonix_api_key" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>API Key</label>
+					<backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+					<config_path>kimonix/general_settings/kimonix_api_key</config_path>
+                </field>
+			</group>
+			<group id="sync_settings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" canRestore="0">
+				<label>Sync Settings</label>
+				<attribute type="expanded">0</attribute>
+				<field id="orders_sync_limit" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+					<label>Orders Sync Limit</label>
+					<config_path>kimonix/sync_settings/orders_sync_limit</config_path>
+					<comment>How many orders to sync on every batch. Note: Setting this too high (or no limit) may result in a high server load (0 = no limit).</comment>
+				</field>
+				<field id="products_sync_limit" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+					<label>Products Sync Limit</label>
+					<config_path>kimonix/sync_settings/products_sync_limit</config_path>
+					<comment>How many products to sync on every batch. Note: Setting this too high (or no limit) may result in a high server load (0 = no limit).</comment>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

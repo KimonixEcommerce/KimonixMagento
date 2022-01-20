@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_save_before">
+        <observer name="kimonix_order_save_before" instance="Kimonix\Kimonix\Observer\OrderSaveBefore" />
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="kimonix_order_save_after" instance="Kimonix\Kimonix\Observer\OrderSaveAfter" />
+    </event>
+    <event name="sales_order_delete_before">
+        <observer name="kimonix_order_delete_before" instance="Kimonix\Kimonix\Observer\OrderDeleteBefore" />
+    </event>
+    <event name="catalog_category_delete_before">
+        <observer name="kimonix_category_delete_before" instance="Kimonix\Kimonix\Observer\CategoryDeleteBefore" />
+    </event>
+    <event name="catalog_product_save_before">
+        <observer name="kimonix_product_save_before" instance="Kimonix\Kimonix\Observer\ProductSaveBefore" />
+    </event>
+    <event name="catalog_product_save_after">
+        <observer name="kimonix_product_save_after" instance="Kimonix\Kimonix\Observer\ProductSaveAfter" />
+    </event>
+    <event name="catalog_product_delete_before">
+        <observer name="kimonix_product_delete_before" instance="Kimonix\Kimonix\Observer\ProductDeleteBefore" />
+    </event>
+    <event name="checkout_cart_add_product_complete">
+        <observer name="kimonix_product_add_to_cart_after" instance="Kimonix\Kimonix\Observer\ProductAddToCartAfter" />
+    </event>
+</config>

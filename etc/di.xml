@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Kimonix Module For Magento 2
+ *
+ * @category Kimonix
+ * @package  Kimonix_Kimonix
+ * @author   Developer: Pniel Cohen (Trus)
+ * @author   Trus (https://www.trus.co.il/)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<!-- API model interface -->
+	<preference for="Kimonix\Kimonix\Api\AuthorizeInterface" type="Kimonix\Kimonix\Model\Api\Authorize"/>
+	<preference for="Kimonix\Kimonix\Api\CategoriesInterface" type="Kimonix\Kimonix\Model\Api\Categories"/>
+	<preference for="Kimonix\Kimonix\Api\CategoryInterface" type="Kimonix\Kimonix\Model\Api\Category"/>
+	<preference for="Kimonix\Kimonix\Api\KimonixInterface" type="Kimonix\Kimonix\Model\Api\Kimonix"/>
+	<!--/ API model interface -->
+	<!-- API data-model interface -->
+	<preference for="Kimonix\Kimonix\Api\Data\BasicResponseInterface" type="Kimonix\Kimonix\Model\Api\Data\BasicResponse"/>
+	<preference for="Kimonix\Kimonix\Api\Data\CategoriesInterface" type="Kimonix\Kimonix\Model\Api\Data\Categories"/>
+	<preference for="Kimonix\Kimonix\Api\Data\CategoryInterface" type="Kimonix\Kimonix\Model\Api\Data\Category"/>
+	<preference for="Kimonix\Kimonix\Api\Data\ProductInterface" type="Kimonix\Kimonix\Model\Api\Data\Product"/>
+	<!--/ API data-model interface -->
+
+	<!-- CLI Commands -->
+	<type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="kimonix_reset" xsi:type="object">Kimonix\Kimonix\Console\Command\Reset</item>
+                <item name="kimonix_setup_progress_update" xsi:type="object">Kimonix\Kimonix\Console\Command\SetupProgressUpdate</item>
+                <item name="kimonix_store_update" xsi:type="object">Kimonix\Kimonix\Console\Command\StoreUpdate</item>
+				<item name="kimonix_sync" xsi:type="object">Kimonix\Kimonix\Console\Command\Sync</item>
+            </argument>
+        </arguments>
+    </type>
+	<!--/ CLI Commands -->
+
+	<!-- Logger -->
+	<type name="Kimonix\Kimonix\Model\Logger\KimonixHandler">
+		<arguments>
+			<argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+		</arguments>
+	</type>
+	<type name="Kimonix\Kimonix\Model\Logger">
+		<arguments>
+			<argument name="name" xsi:type="string">kimonixKimonixLogger</argument>
+			<argument name="handlers"  xsi:type="array">
+				<item name="system" xsi:type="object">Kimonix\Kimonix\Model\Logger\KimonixHandler</item>
+			</argument>
+		</arguments>
+	</type>
+	<!--/ Logger-->
+</config>
