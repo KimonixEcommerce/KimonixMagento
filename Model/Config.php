@@ -402,6 +402,14 @@ class Config
     }
 
     /**
+     * @method getCurrentStore
+     */
+    public function getCurrentStore()
+    {
+        return $this->storeManager->getStore();
+    }
+
+    /**
      * @method getCurrentStoreId
      * @return int
      */

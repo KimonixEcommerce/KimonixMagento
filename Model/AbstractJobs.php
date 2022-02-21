@@ -223,7 +223,7 @@ abstract class AbstractJobs
     {
         $this->appEmulation->startEnvironmentEmulation(
             \Magento\Store\Model\Store::DEFAULT_STORE_ID,
-            Area::AREA_ADMINHTML,
+            Area::AREA_FRONTEND,
             true
         );
         return $this;
