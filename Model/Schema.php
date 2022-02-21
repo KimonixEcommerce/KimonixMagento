@@ -11,6 +11,7 @@
 namespace Kimonix\Kimonix\Model;
 
 use Kimonix\Kimonix\Model\Config as KimonixConfig;
+use Magento\Catalog\Helper\Image as CatalogImageHelper;
 use Magento\Catalog\Model\Product\Image\UrlBuilder as ProductUrlBuilder;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\Catalog\Model\Product\Type as ProductType;
@@ -21,6 +22,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Sales\Model\Order;
 use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\UrlInterface;
 
 /**
  * Kimonix schema.
@@ -33,9 +35,14 @@ class Schema
     private $productDefaultPlaceholderUrl;
 
     /**
-     * @var ProductUrlBuilder
+     * @var KimonixConfig
      */
-    private $productUrlBuilder;
+    private $kimonixConfig;
+
+    /**
+     * @var CatalogImageHelper
+     */
+    private $catalogImageHelper;
 
     /**
      * @var StockItemRepository
@@ -54,32 +61,24 @@ class Schema
 
     /**
      * @method __construct
-     * @param  ProductUrlBuilder   $productUrlBuilder
+     * @param  KimonixConfig       $kimonixConfig
+     * @param  CatalogImageHelper  $catalogImageHelper
      * @param  StockItemRepository $stockItemRepository
      * @param  ProductStatus       $productStatus
      * @param  TimezoneInterface   $localeDate
      */
     public function __construct(
-        ProductUrlBuilder $productUrlBuilder,
+        KimonixConfig $kimonixConfig,
+        CatalogImageHelper $catalogImageHelper,
         StockItemRepository $stockItemRepository,
         ProductStatus $productStatus,
         TimezoneInterface $localeDate
     ) {
-        $this->productUrlBuilder = $productUrlBuilder;
+        $this->kimonixConfig = $kimonixConfig;
+        $this->catalogImageHelper = $catalogImageHelper;
         $this->stockItemRepository = $stockItemRepository;
         $this->productStatus = $productStatus;
         $this->localeDate = $localeDate;
-    }
-
-    /**
-     * @method formatDate
-     * @param  string     $date
-     * @param  string     $format
-     * @return string
-     */
-    public function formatDate($date, $format = KimonixConfig::KIMONIX_DATE_FORMAT)
-    {
-        return \date($format, strtotime($date));
     }
 
     /**
@@ -106,21 +105,29 @@ class Schema
 
     /**
      * @method getProductImageUrl
-     * @param  string            $baseFilePath
-     * @param  string            $imageDisplayArea
-     * @param  string            $fallbackFilePath
-     * @return string
+     * @param  Product            $product
+     * @param  string             $imageDisplayArea
+     * @param  string             $fallbackDisplayArea
+     * @return string|null
      */
-    public function getProductImageUrl($baseFilePath, $imageDisplayArea = 'product_page_image_large', $fallbackFilePath = null)
+    public function getProductImageUrl(Product $product, $imageDisplayAreas = ['product_page_image_large', 'product_page_image_small', 'product_base_image', 'product_listing_thumbnail'], $fallbackDisplayImage = 'image')
     {
-        if (!$baseFilePath || $baseFilePath === 'no_selection') {
-            if ($fallbackFilePath && $fallbackFilePath !== 'no_selection') {
-                $baseFilePath = $fallbackFilePath;
-            } else {
-                return null;
+        $url = null;
+        foreach ($imageDisplayAreas as $imageDisplayArea) {
+            $url = $this->catalogImageHelper->init($product, $imageDisplayArea)->getUrl();
+            if($url !== $this->getProductDefaultPlaceholderUrl()){
+                break;
             }
         }
-        return $this->productUrlBuilder->getUrl($baseFilePath, $imageDisplayArea) ?: null;
+        if($url === $this->getProductDefaultPlaceholderUrl()){
+            $baseImageUrl = $this->kimonixConfig->getCurrentStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product';
+            if(($fallbackImage = $product->getData($fallbackDisplayImage))){
+                $url = $baseImageUrl . $fallbackImage;
+            }elseif($fallbackDisplayImage !== 'image' && ($fallbackImage = $product->getData('image'))){
+                $url = $baseImageUrl . $fallbackImage;
+            }
+        }
+        return $url;
     }
 
     /**
@@ -162,8 +169,8 @@ class Schema
         $schema = [
             "id" => (int) $product->getId(),
             "sku" => (string) $product->getSku(),
-            "created_at" => (string) $this->formatDate($product->getCreatedAt()),
-            "updated_at" => (string) $this->formatDate($product->getUpdatedAt()),
+            "created_at" => (string) $this->kimonixConfig->formatDate($product->getCreatedAt()),
+            "updated_at" => (string) $this->kimonixConfig->formatDate($product->getUpdatedAt()),
             "body_html" => (string) $product->getShortDescription(),
             "title" => (string) $product->getName(),
             "is_active" => (bool) in_array($product->getStatus(), $this->getVisibleStatusIds()),
@@ -174,10 +181,10 @@ class Schema
             "regular_price" => (float) $product->getPriceInfo()->getPrice('regular_price')->getValue(),
             "final_price" => (float) $product->getFinalPrice(),
             "image" => [
-                "src" => $this->getProductImageUrl($product->getImage(), 'product_page_image_large', $product->getSmallImage()),
+                "src" => $this->getProductImageUrl($product, ['product_page_image_large', 'product_base_image', 'product_small_image'], 'image'),
             ],
             "thumbnail" => [
-                "src" => $this->getProductImageUrl($product->getThumbnail(), 'product_page_image_small', $product->getImage()),
+                "src" => $this->getProductImageUrl($product, ['product_listing_thumbnail', 'product_small_image', 'product_page_image_large', 'product_base_image'], 'thumbnail'),
             ],
             "is_new" => $this->isProductNew($product),
             "is_update" => $product->getKimonixSyncFlag() === null ? false : true,
@@ -220,10 +227,10 @@ class Schema
                     ],
                     "type_id" => (string) $childProduct->getTypeId(),
                     "image" => [
-                        "src" => $this->getProductImageUrl($childProduct->getImage(), 'product_page_image_large', $childProduct->getSmallImage()),
+                        "src" => $this->getProductImageUrl($childProduct, ['product_page_image_large', 'product_base_image', 'product_small_image'], 'image'),
                     ],
                     "thumbnail" => [
-                        "src" => $this->getProductImageUrl($childProduct->getThumbnail(), 'product_page_image_small', $childProduct->getImage()),
+                        "src" => $this->getProductImageUrl($childProduct, ['product_listing_thumbnail', 'product_small_image', 'product_page_image_large', 'product_base_image'], 'thumbnail'),
                     ],
                 ];
 
@@ -261,8 +268,8 @@ class Schema
         $schema = [
             "id" => (int) $order->getId(),
             "increment_id" => (string) $order->getIncrementId(),
-            "created_at" => (string) $this->formatDate($order->getCreatedAt()),
-            "updated_at" => (string) $this->formatDate($order->getUpdatedAt()),
+            "created_at" => (string) $this->kimonixConfig->formatDate($order->getCreatedAt()),
+            "updated_at" => (string) $this->kimonixConfig->formatDate($order->getUpdatedAt()),
             "customer" => [
                 (int) "id" => $order->getCustomerId(),
                 (string) "email" => $order->getCustomerEmail()
