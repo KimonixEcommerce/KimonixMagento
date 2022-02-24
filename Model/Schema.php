@@ -282,6 +282,8 @@ class Schema
             "increment_id" => (string) $order->getIncrementId(),
             "created_at" => (string) $this->kimonixConfig->formatDate($order->getCreatedAt()),
             "updated_at" => (string) $this->kimonixConfig->formatDate($order->getUpdatedAt()),
+            "status" => (string) $order->getStatus(),
+            "state" => (string) $order->getState(),
             "customer" => [
                 (int) "id" => $order->getCustomerId(),
                 (string) "email" => $order->getCustomerEmail()
@@ -291,8 +293,8 @@ class Schema
             "shippingLine" => [
                 "price" => (float) $order->getBaseShippingAmount()
             ],
-            "totalPrice" => (float) $order->getBaseTaxAmount(),
-            "totalTax" => (float) $order->getBaseGrandTotal(),
+            "totalTax" => (float) $order->getBaseTaxAmount(),
+            "totalPrice" => (float) $order->getBaseGrandTotal(),
             "is_update" => $order->getKimonixSyncFlag() === null ? true : false,
         ];
 
