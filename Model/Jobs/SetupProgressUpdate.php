@@ -89,7 +89,7 @@ class SetupProgressUpdate extends AbstractJobs
             ['kimonix_sync_sales'=>$collection->getTable('kimonix_sync_sales')],
             "{$this->getMainTableAlias($collection)}.{$collection->getIdFieldName()} = kimonix_sync_sales.entity_id AND kimonix_sync_sales.entity_type = 'orders'",
             [
-                'kimonix_sync_flag'=>'kimonix_sync_sales.sync_flag'
+                'kimonix_sync_flag'=>'MAX(kimonix_sync_sales.sync_flag)'
             ]
         );
 
@@ -120,7 +120,7 @@ class SetupProgressUpdate extends AbstractJobs
             ['kimonix_sync'=>$collection->getTable('kimonix_sync')],
             "{$this->getMainTableAlias($collection)}.{$collection->getIdFieldName()} = kimonix_sync.entity_id AND kimonix_sync.entity_type = 'products'",
             [
-                'kimonix_sync_flag'=>'kimonix_sync.sync_flag'
+                'kimonix_sync_flag'=>'MAX(kimonix_sync.sync_flag)'
             ]
         );
         $collection->addAttributeToFilter('status', ['in' => $this->productStatus->getVisibleStatusIds()]);
