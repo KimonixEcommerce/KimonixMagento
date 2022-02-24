@@ -200,17 +200,21 @@ class Schema
         }
 
         $childKey = false;
-        if ($product->getTypeId() == ProductType::TYPE_SIMPLE) {
-            $childProducts = [$product];
-            $childKey = "variants";
-        } elseif ($product->getTypeId() == ProductTypeConfigurable::TYPE_CODE) {
-            $childProducts = $product->getTypeInstance()->getUsedProducts($product);
-            $childKey = "variants";
-        } elseif (($typeInstance = $product->getTypeInstance()) &&
-            (($childProducts = $typeInstance->getAssociatedProducts($product)))
-        ) {
-            $childProducts = $product->getTypeInstance()->getAssociatedProducts($product);
-            $childKey = "variants";
+        switch ($product->getTypeId()) {
+            case ProductTypeConfigurable::TYPE_CODE:
+                $childProducts = $product->getTypeInstance()->getUsedProducts($product);
+                $childKey = "variants";
+                break;
+
+            case ProductTypeGrouped::TYPE_CODE:
+                $childProducts = $product->getTypeInstance()->getAssociatedProducts($product);
+                $childKey = "variants";
+                break;
+
+            default:
+                $childProducts = [$product];
+                $childKey = "variants";
+                break;
         }
 
         if ($childKey && $childProducts) {
@@ -252,6 +256,8 @@ class Schema
             $schema["regular_price"] = $schema["regular_price"] ?: min(array_column($schema[$childKey], "regular_price"));
             $schema["final_price"] = $schema["final_price"] ?: min(array_column($schema[$childKey], "final_price"));
             $schema["inventory"] = array_sum(array_column($schema[$childKey], "inventory_quantity"));
+        }else{
+            throw new \Exception("Couldn't load child products (variants) for product ID: {$product->getId()}");
         }
 
         if (($addsToCart = $product->getData('adds_to_cart')) !== null) {
@@ -276,6 +282,8 @@ class Schema
             "increment_id" => (string) $order->getIncrementId(),
             "created_at" => (string) $this->kimonixConfig->formatDate($order->getCreatedAt()),
             "updated_at" => (string) $this->kimonixConfig->formatDate($order->getUpdatedAt()),
+            "status" => (string) $order->getStatus(),
+            "state" => (string) $order->getState(),
             "customer" => [
                 (int) "id" => $order->getCustomerId(),
                 (string) "email" => $order->getCustomerEmail()
@@ -285,8 +293,8 @@ class Schema
             "shippingLine" => [
                 "price" => (float) $order->getBaseShippingAmount()
             ],
-            "totalPrice" => (float) $order->getBaseTaxAmount(),
-            "totalTax" => (float) $order->getBaseGrandTotal(),
+            "totalTax" => (float) $order->getBaseTaxAmount(),
+            "totalPrice" => (float) $order->getBaseGrandTotal(),
             "is_update" => $order->getKimonixSyncFlag() === null ? true : false,
         ];
 
@@ -319,7 +327,8 @@ class Schema
                 ],
                 "discountedTotalSet" => [
                     "shopMoney" => [
-                        "amount" => (float) $orderItem->getBaseDiscountAmount()
+                        "amount" => (float) $orderItem->getBaseRowTotalInclTax(),
+                        "tax_amount" => (float) $orderItem->getBaseTaxAmount()
                     ],
                 ],
                 "quantity" => (int) $orderItem->getQtyOrdered(),
