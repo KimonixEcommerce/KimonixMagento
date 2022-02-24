@@ -83,6 +83,7 @@ class Update extends AbstractRequest
             parent::getParams(),
             [
               'id' => $category->getId(),
+              'name' => $category->getName(),
               'description' => $category->getDescription(),
               'url_key' => $category->getUrlKey(),
               'parent_id' => $category->getParentId(),
