@@ -16,7 +16,7 @@ use Kimonix\Kimonix\Model\Response\Factory as ResponseFactory;
 use Magento\Catalog\Model\Category;
 
 /**
- * Kimonix orders/update request model.
+ * Kimonix categories/update request model.
  */
 class Update extends AbstractRequest
 {
@@ -58,7 +58,7 @@ class Update extends AbstractRequest
      */
     protected function getRequestMethod()
     {
-        return RequestFactory::CATEGORIES_DELETE_REQUEST_METHOD;
+        return RequestFactory::CATEGORIES_UPDATE_REQUEST_METHOD;
     }
 
     /**
@@ -68,7 +68,7 @@ class Update extends AbstractRequest
      */
     protected function getResponseHandlerType()
     {
-        return ResponseFactory::CATEGORIES_DELETE_RESPONSE_HANDLER;
+        return ResponseFactory::CATEGORIES_UPDATE_RESPONSE_HANDLER;
     }
 
     /**
@@ -83,6 +83,7 @@ class Update extends AbstractRequest
             parent::getParams(),
             [
               'id' => $category->getId(),
+              'name' => $category->getName(),
               'description' => $category->getDescription(),
               'url_key' => $category->getUrlKey(),
               'parent_id' => $category->getParentId(),

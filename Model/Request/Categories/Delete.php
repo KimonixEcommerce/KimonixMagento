@@ -16,7 +16,7 @@ use Kimonix\Kimonix\Model\Response\Factory as ResponseFactory;
 use Magento\Catalog\Model\Category;
 
 /**
- * Kimonix orders/delete request model.
+ * Kimonix categories/delete request model.
  */
 class Delete extends AbstractRequest
 {
