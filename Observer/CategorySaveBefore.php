@@ -15,7 +15,7 @@ use Kimonix\Kimonix\Model\Config as KimonixConfig;
 use Kimonix\Kimonix\Model\Request\Factory as KimonixRequestFactory;
 use Magento\Framework\Event\Observer;
 
-class CategoryUpdateBefore implements ObserverInterface
+class CategorySaveBefore implements ObserverInterface
 {
     /**
      * @var KimonixConfig
