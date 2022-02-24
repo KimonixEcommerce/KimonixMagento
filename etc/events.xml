@@ -19,6 +19,9 @@
     <event name="sales_order_delete_before">
         <observer name="kimonix_order_delete_before" instance="Kimonix\Kimonix\Observer\OrderDeleteBefore" />
     </event>
+    <event name="catalog_category_save_before">
+        <observer name="kimonix_category_save_before" instance="Kimonix\Kimonix\Observer\CategorySaveBefore" />
+    </event>
     <event name="catalog_category_delete_before">
         <observer name="kimonix_category_delete_before" instance="Kimonix\Kimonix\Observer\CategoryDeleteBefore" />
     </event>
