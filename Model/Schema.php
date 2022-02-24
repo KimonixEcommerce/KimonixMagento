@@ -200,17 +200,21 @@ class Schema
         }
 
         $childKey = false;
-        if ($product->getTypeId() == ProductType::TYPE_SIMPLE) {
-            $childProducts = [$product];
-            $childKey = "variants";
-        } elseif ($product->getTypeId() == ProductTypeConfigurable::TYPE_CODE) {
-            $childProducts = $product->getTypeInstance()->getUsedProducts($product);
-            $childKey = "variants";
-        } elseif (($typeInstance = $product->getTypeInstance()) &&
-            (($childProducts = $typeInstance->getAssociatedProducts($product)))
-        ) {
-            $childProducts = $product->getTypeInstance()->getAssociatedProducts($product);
-            $childKey = "variants";
+        switch ($product->getTypeId()) {
+            case ProductTypeConfigurable::TYPE_CODE:
+                $childProducts = $product->getTypeInstance()->getUsedProducts($product);
+                $childKey = "variants";
+                break;
+
+            case ProductTypeGrouped::TYPE_CODE:
+                $childProducts = $product->getTypeInstance()->getAssociatedProducts($product);
+                $childKey = "variants";
+                break;
+
+            default:
+                $childProducts = [$product];
+                $childKey = "variants";
+                break;
         }
 
         if ($childKey && $childProducts) {
@@ -252,6 +256,8 @@ class Schema
             $schema["regular_price"] = $schema["regular_price"] ?: min(array_column($schema[$childKey], "regular_price"));
             $schema["final_price"] = $schema["final_price"] ?: min(array_column($schema[$childKey], "final_price"));
             $schema["inventory"] = array_sum(array_column($schema[$childKey], "inventory_quantity"));
+        }else{
+            throw new \Exception("Couldn't load child products (variants) for product ID: {$product->getId()}");
         }
 
         if (($addsToCart = $product->getData('adds_to_cart')) !== null) {
