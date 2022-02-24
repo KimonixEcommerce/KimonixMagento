@@ -120,7 +120,7 @@ class ProductsSync extends AbstractJobs
             ['kimonix_sync'=>$collection->getTable('kimonix_sync')],
             "{$mainTable}.{$idFieldName} = kimonix_sync.entity_id AND kimonix_sync.entity_type = 'products'",
             [
-                'kimonix_sync_flag'=>'kimonix_sync.sync_flag'
+                'kimonix_sync_flag'=>'MAX(kimonix_sync.sync_flag)'
             ]
         );
 
@@ -140,7 +140,7 @@ class ProductsSync extends AbstractJobs
         }
 
         if ($this->_kimonixConfig->isActiveReviews()) {
-            $collection->getSelect()->join(
+            $collection->getSelect()->joinLeft(
                 ['review_entity_summary'=>$collection->getTable('review_entity_summary')],
                 "review_entity_summary.entity_pk_value = {$mainTable}.{$idFieldName} AND review_entity_summary.entity_type = '". $this->reviewModel->getEntityIdByCode(ReviewModel::ENTITY_PRODUCT_CODE) ."'",
                 [
