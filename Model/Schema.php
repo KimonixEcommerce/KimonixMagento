@@ -23,6 +23,7 @@ use Magento\Sales\Model\Order;
 use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Kimonix schema.
@@ -137,7 +138,16 @@ class Schema
      */
     public function getProductStockItem(Product $product)
     {
-        return $product->getStockItem() ?: $this->stockItemRepository->get($product->getId());
+        try {
+            if($product->getTypeId() === ProductTypeGrouped::TYPE_CODE){
+                return false;
+            }
+            return $product->getStockItem() ?: $this->stockItemRepository->get($product->getId());
+        } catch (\NoSuchEntityException $e) {
+            return false;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -197,6 +207,10 @@ class Schema
             $schema["inventory"] = (int) $stockItem->getQty();
             $schema["inventory_tracked"] = (bool) $stockItem->getManageStock();
             $schema["is_in_stock"] = (bool) $stockItem->getIsInStock();
+        }else{
+            $schema["inventory"] = (int) 0;
+            $schema["inventory_tracked"] = (bool) 0;
+            $schema["is_in_stock"] = (bool) $product->isSalable();
         }
 
         $childKey = false;
@@ -248,6 +262,10 @@ class Schema
                     $childSchema["inventory_quantity"] = (int) $stockItem->getQty();
                     $childSchema["inventory_item"]["tracked"] = (bool) $stockItem->getManageStock();
                     $childSchema["inventory_item"]["is_in_stock"] = (bool) $stockItem->getIsInStock();
+                }else{
+                    $childSchema["inventory_quantity"] = 0;
+                    $childSchema["inventory_item"]["tracked"] = 0;
+                    $childSchema["inventory_item"]["is_in_stock"] = (bool) $childProduct->isSalable();
                 }
                 $schema[$childKey][] = $childSchema;
             }
