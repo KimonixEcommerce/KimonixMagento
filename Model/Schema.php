@@ -327,7 +327,8 @@ class Schema
                 ],
                 "discountedTotalSet" => [
                     "shopMoney" => [
-                        "amount" => (float) $orderItem->getBaseDiscountAmount()
+                        "amount" => (float) $orderItem->getBaseRowTotalInclTax(),
+                        "tax_amount" => (float) $orderItem->getBaseTaxAmount()
                     ],
                 ],
                 "quantity" => (int) $orderItem->getQtyOrdered(),
