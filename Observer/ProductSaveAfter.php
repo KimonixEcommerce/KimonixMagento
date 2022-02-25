@@ -75,7 +75,8 @@ class ProductSaveAfter implements ObserverInterface
                 $productId = $product->getId();
 
                 if (($origProductDataHash = $this->registry->registry('kimonix/product/watch_hash/id' . $productId))) {
-                    $ratingSummary = $this->kimonixConfig->isActiveReviews() ? $this->reviewFactory->create()->getEntitySummary($product)->getRatingSummary() : false;
+                    $ratingSummary = $this->kimonixConfig->isActiveReviews() && ($entitySummary = $this->reviewFactory->create()->getEntitySummary($product)) ?
+                        $entitySummary->getRatingSummary() : false;
                     $newProductDataHash = hash('sha256', json_encode([
                         $this->kimonixSchema->getProductSchema($product),
                         $ratingSummary ? $ratingSummary->getData() : null,

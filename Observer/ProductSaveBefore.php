@@ -77,7 +77,8 @@ class ProductSaveBefore implements ObserverInterface
                     if (!$eventProduct->isObjectNew()) {
                         $productId = $eventProduct->getId();
                         $product = $this->productFactory->create()->load($productId);
-                        $ratingSummary = $this->kimonixConfig->isActiveReviews() ? $this->reviewFactory->create()->getEntitySummary($product)->getRatingSummary() : false;
+                        $ratingSummary = $this->kimonixConfig->isActiveReviews() && ($entitySummary = $this->reviewFactory->create()->getEntitySummary($product)) ? 
+                            $entitySummary->getRatingSummary() : false;
                         $this->registry->register(
                             'kimonix/product/watch_hash/id' . $productId,
                             hash('sha256', json_encode([
