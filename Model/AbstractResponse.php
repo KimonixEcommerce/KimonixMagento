@@ -15,6 +15,9 @@ use Kimonix\Kimonix\Lib\Http\Client\Curl;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Symfony\Component\Console\Output\OutputInterface;
+use Magento\Framework\App\Cache\Type\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Config\ReinitableConfigInterface;
 
 /**
  * Kimonix abstract response model.
@@ -30,6 +33,16 @@ abstract class AbstractResponse implements ResponseInterface
      * @var Curl
      */
     protected $_curl;
+
+    /**
+     * @var ReinitableConfigInterface
+     */
+    private $_appConfig;
+
+    /**
+     * @var TypeListInterface
+     */
+    private $_cacheTypeList;
 
     /**
      * @var int
@@ -53,15 +66,21 @@ abstract class AbstractResponse implements ResponseInterface
 
     /**
      * @method __construct
-     * @param  KimonixConfig $kimonixConfig
-     * @param  Curl          $curl
+     * @param  KimonixConfig             $kimonixConfig
+     * @param  Curl                      $curl
+     * @param  ReinitableConfigInterface $appConfig
+     * @param  TypeListInterface         $cacheTypeList
      */
     public function __construct(
         KimonixConfig $kimonixConfig,
-        Curl $curl
+        Curl $curl,
+        ReinitableConfigInterface $appConfig,
+        TypeListInterface $cacheTypeList
     ) {
         $this->_kimonixConfig = $kimonixConfig;
         $this->_curl = $curl;
+        $this->_appConfig = $appConfig;
+        $this->_cacheTypeList = $cacheTypeList;
     }
 
     /**
@@ -272,6 +291,17 @@ abstract class AbstractResponse implements ResponseInterface
             }
         }
 
+        return $this;
+    }
+
+    protected function cleanConfigCache()
+    {
+        try {
+            $this->_cacheTypeList->cleanType(Config::TYPE_IDENTIFIER);
+            $this->_appConfig->reinit();
+        } catch (\Exception $e) {
+            throw new \Exception(sprintf('Kimonix changes are saved, but for some reason, it couldn\'t clear the config cache. Please clear the cache manually. (Exception message: %s)', $e->getMessage()));
+        }
         return $this;
     }
 }

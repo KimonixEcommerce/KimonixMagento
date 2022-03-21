@@ -11,28 +11,12 @@
 namespace Kimonix\Kimonix\Model\Response\Setup;
 
 use Kimonix\Kimonix\Model\AbstractResponse;
-use Kimonix\Kimonix\Model\Config as KimonixConfig;
-use Kimonix\Kimonix\Lib\Http\Client\Curl;
-use Magento\Store\Model\ScopeInterface;
-use Magento\Framework\App\Cache\Type\Config;
-use Magento\Framework\App\Cache\TypeListInterface;
-use Magento\Framework\App\Config\ReinitableConfigInterface;
 
 /**
  * Kimonix store response model.
  */
 class Store extends AbstractResponse
 {
-    /**
-     * @var ReinitableConfigInterface
-     */
-    private $_appConfig;
-
-    /**
-     * @var TypeListInterface
-     */
-    private $_cacheTypeList;
-
     /**
      * @var string
      */
@@ -47,24 +31,6 @@ class Store extends AbstractResponse
      * @var int
      */
     protected $_dataPeriodDays;
-
-    /**
-     * @method __construct
-     * @param  KimonixConfig             $kimonixConfig
-     * @param  Curl                      $curl
-     * @param  ReinitableConfigInterface $appConfig
-     * @param  TypeListInterface         $cacheTypeList
-     */
-    public function __construct(
-        KimonixConfig $kimonixConfig,
-        Curl $curl,
-        ReinitableConfigInterface $appConfig,
-        TypeListInterface $cacheTypeList
-    ) {
-        parent::__construct($kimonixConfig, $curl);
-        $this->_appConfig = $appConfig;
-        $this->_cacheTypeList = $cacheTypeList;
-    }
 
     /**
      * @return AbstractResponse
@@ -92,17 +58,6 @@ class Store extends AbstractResponse
     protected function getRequiredResponseDataKeys()
     {
         return ['_id', 'allow_data_sending', 'data_period_days'];
-    }
-
-    protected function cleanConfigCache()
-    {
-        try {
-            $this->_cacheTypeList->cleanType(Config::TYPE_IDENTIFIER);
-            $this->_appConfig->reinit();
-        } catch (\Exception $e) {
-            throw new \Exception(sprintf('Kimonix changes are saved, but for some reason, it couldn\'t clear the config cache. Please clear the cache manually. (Exception message: %s)', $e->getMessage()));
-        }
-        return $this;
     }
 
     /**
