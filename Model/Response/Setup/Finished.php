@@ -26,6 +26,7 @@ class Finished extends AbstractResponse
     public function update($scope = ScopeInterface::SCOPE_STORE, $scopeId = null)
     {
         $this->_kimonixConfig->updateIsSetupFinished(1, $scope, $scopeId);
+        $this->cleanConfigCache();
         return $this;
     }
 }
