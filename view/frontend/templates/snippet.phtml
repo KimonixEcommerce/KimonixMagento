@@ -16,7 +16,6 @@ if (!$block->isEnabled() || !($scriptUrl = $block->getKimonixJsUrl())) {
 <script>
 (function  () {
     window.kimonixData = <?php echo $block->getSnippetJsonData(); ?>;
-    console.log(window.kimonixData);
     document.addEventListener("DOMContentLoaded", function() {
         var kimonixJs = document.createElement('script');
         kimonixJs.src = '<?php echo $scriptUrl; ?>';
