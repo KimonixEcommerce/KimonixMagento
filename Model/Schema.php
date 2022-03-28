@@ -116,15 +116,15 @@ class Schema
         $url = null;
         foreach ($imageDisplayAreas as $imageDisplayArea) {
             $url = $this->catalogImageHelper->init($product, $imageDisplayArea)->getUrl();
-            if($url && $url !== $this->getProductDefaultPlaceholderUrl() && substr($url, -17) !== '/placeholder/.jpg'){
+            if ($url && $url !== $this->getProductDefaultPlaceholderUrl() && substr($url, -17) !== '/placeholder/.jpg') {
                 break;
             }
         }
-        if($url === $this->getProductDefaultPlaceholderUrl()){
+        if ($url === $this->getProductDefaultPlaceholderUrl()) {
             $baseImageUrl = $this->kimonixConfig->getCurrentStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product';
-            if(($fallbackImage = $product->getData($fallbackDisplayImage))){
+            if (($fallbackImage = $product->getData($fallbackDisplayImage))) {
                 $url = $baseImageUrl . $fallbackImage;
-            }elseif($fallbackDisplayImage !== 'image' && ($fallbackImage = $product->getData('image'))){
+            } elseif ($fallbackDisplayImage !== 'image' && ($fallbackImage = $product->getData('image'))) {
                 $url = $baseImageUrl . $fallbackImage;
             }
         }
@@ -139,7 +139,7 @@ class Schema
     public function getProductStockItem(Product $product)
     {
         try {
-            if($product->getTypeId() === ProductTypeGrouped::TYPE_CODE){
+            if ($product->getTypeId() === ProductTypeGrouped::TYPE_CODE) {
                 return false;
             }
             return $product->getStockItem() ?: $this->stockItemRepository->get($product->getId());
@@ -207,7 +207,7 @@ class Schema
             $schema["inventory"] = (int) $stockItem->getQty();
             $schema["inventory_tracked"] = (bool) $stockItem->getManageStock();
             $schema["is_in_stock"] = (bool) $stockItem->getIsInStock();
-        }else{
+        } else {
             $schema["inventory"] = (int) 0;
             $schema["inventory_tracked"] = (bool) 0;
             $schema["is_in_stock"] = (bool) $product->isSalable();
@@ -262,7 +262,7 @@ class Schema
                     $childSchema["inventory_quantity"] = (int) $stockItem->getQty();
                     $childSchema["inventory_item"]["tracked"] = (bool) $stockItem->getManageStock();
                     $childSchema["inventory_item"]["is_in_stock"] = (bool) $stockItem->getIsInStock();
-                }else{
+                } else {
                     $childSchema["inventory_quantity"] = 0;
                     $childSchema["inventory_item"]["tracked"] = 0;
                     $childSchema["inventory_item"]["is_in_stock"] = (bool) $childProduct->isSalable();
@@ -274,7 +274,7 @@ class Schema
             $schema["regular_price"] = $schema["regular_price"] ?: min(array_column($schema[$childKey], "regular_price"));
             $schema["final_price"] = $schema["final_price"] ?: min(array_column($schema[$childKey], "final_price"));
             $schema["inventory"] = array_sum(array_column($schema[$childKey], "inventory_quantity"));
-        }else{
+        } else {
             throw new \Exception("Couldn't load child products (variants) for product ID: {$product->getId()}");
         }
 

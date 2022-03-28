@@ -14,7 +14,7 @@ interface AuthorizeInterface
 {
 
     /**
-     * @return Data\BasicResponseInterface
+     * @return \Kimonix\Kimonix\Api\Data\BasicResponseInterface
      */
     public function authorize();
 }

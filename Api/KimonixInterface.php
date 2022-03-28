@@ -14,13 +14,13 @@ interface KimonixInterface
 {
     /**
      * @param  string|null $entityType
-     * @return Data\BasicResponseInterface
+     * @return \Kimonix\Kimonix\Api\Data\BasicResponseInterface
      */
     public function resetSyncFlags($entityType = null);
 
     /**
      * @param  string|null $apiUrl
-     * @return Data\BasicResponseInterface
+     * @return \Kimonix\Kimonix\Api\Data\BasicResponseInterface
      */
     public function setKimonixApiUrl($apiUrl = null);
 }

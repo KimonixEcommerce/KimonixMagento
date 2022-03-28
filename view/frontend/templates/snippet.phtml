@@ -15,10 +15,10 @@ if (!$block->isEnabled() || !($scriptUrl = $block->getKimonixJsUrl())) {
 <!-- Kimonix - Script Loader -->
 <script>
 (function  () {
-    window.kimonixData = <?php echo $block->getSnippetJsonData(); ?>;
+    window.kimonixData = <?= /* @noEscape */ $block->getSnippetJsonData() ?>;
     document.addEventListener("DOMContentLoaded", function() {
         var kimonixJs = document.createElement('script');
-        kimonixJs.src = '<?php echo $scriptUrl; ?>';
+        kimonixJs.src = '<?= /* @noEscape */ $scriptUrl ?>';
         document.body.appendChild(kimonixJs);
     });
 })();

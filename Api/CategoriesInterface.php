@@ -16,13 +16,13 @@ interface CategoriesInterface
     /**
      * @param  int|null   $limit
      * @param  int|null   $page
-     * @return Data\CategoriesInterface
+     * @return \Kimonix\Kimonix\Api\Data\CategoriesInterface
      */
     public function getCategories($limit = null, $page = null);
 
     /**
-     * @param  Data\CategoryInterface[] $categories
-     * @return Data\CategoriesInterface
+     * @param  \Kimonix\Kimonix\Api\Data\CategoryInterface[] $categories
+     * @return \Kimonix\Kimonix\Api\Data\CategoriesInterface
      */
     public function postCategories($categories = []);
 }

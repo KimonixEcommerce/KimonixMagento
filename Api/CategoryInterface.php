@@ -14,14 +14,14 @@ interface CategoryInterface
 {
     /**
      * @param int $id
-     * @return Data\CategoryInterface.
+     * @return \Kimonix\Kimonix\Api\Data\CategoryInterface.
      */
     public function getProducts($id);
 
     /**
      * @param int $id
      * @param int[] $product_ids
-     * @return Data\BasicResponseInterface
+     * @return \Kimonix\Kimonix\Api\Data\BasicResponseInterface
      */
     public function postProducts($id, $product_ids = []);
 
@@ -29,7 +29,7 @@ interface CategoryInterface
      * @param int $id
      * @param string $kimonixControl
      * @param bool|int|null $dynamicFetch
-     * @return Data\BasicResponseInterface
+     * @return \Kimonix\Kimonix\Api\Data\BasicResponseInterface
      */
     public function setKimonixAttributes($id, $kimonixControl, $dynamicFetch = null);
 }

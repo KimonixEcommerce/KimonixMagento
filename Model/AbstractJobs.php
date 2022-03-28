@@ -340,7 +340,7 @@ abstract class AbstractJobs
     {
         if (!$this->_kimonixConfig->isSetupFinished()) {
             $job = $this->getObjectManager()->get(\Kimonix\Kimonix\Model\Jobs\SetupProgressUpdate::class);
-            if(($output = $this->getOutput())){
+            if (($output = $this->getOutput())) {
                 $job->setOutput($output);
             }
             $job->execute();

@@ -191,9 +191,6 @@ abstract class AbstractResponse implements ResponseInterface
         if ($this->_body === null) {
             $body = $this->_curl->getBody();
             $this->_body = (array) json_decode($body, 1);
-            if ($body && !$this->_body) {
-                parse_str($body, $this->_body);
-            }
         }
 
         return $this->_body;
