@@ -24,6 +24,7 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\DataObject;
 
 /**
  * Kimonix schema.
@@ -142,7 +143,11 @@ class Schema
             if ($product->getTypeId() === ProductTypeGrouped::TYPE_CODE) {
                 return false;
             }
-            return $product->getStockItem() ?: $this->stockItemRepository->get($product->getId());
+            $stockItem = $product->getStockItem() ?: $this->stockItemRepository->get($product->getId());
+            if(is_array($stockItem)){
+                $stockItem = new DataObject($stockItem);
+            }
+            return $stockItem;
         } catch (\NoSuchEntityException $e) {
             return false;
         } catch (\Exception $e) {
