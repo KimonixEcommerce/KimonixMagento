@@ -29,22 +29,22 @@ use Magento\Review\Model\Review\Config as ReviewConfig;
  */
 class Config
 {
-    const MODULE_NAME = 'Kimonix_Kimonix';
+    public const MODULE_NAME = 'Kimonix_Kimonix';
 
-    const KIMONIX_DATE_FORMAT = 'Y-m-d\TH:i:s.000\Z';
+    public const KIMONIX_DATE_FORMAT = 'Y-m-d\TH:i:s.000\Z';
 
-    const KIMONIX_API_URL = 'https://api-magento.kimonix.com'; //Default
-    const CONFIGPATH_KIMONIX_API_URL = 'kimonix/general_settings/kimonix_api_url'; //Override
+    public const KIMONIX_API_URL = 'https://api-magento.kimonix.com'; //Default
+    public const CONFIGPATH_KIMONIX_API_URL = 'kimonix/general_settings/kimonix_api_url'; //Override
 
-    const CONFIGPATH_KIMONIX_ENABLED = 'kimonix/general_settings/enabled';
-    const CONFIGPATH_KIMONIX_DEBUG = 'kimonix/general_settings/debug';
-    const CONFIGPATH_KIMONIX_API_KEY = 'kimonix/general_settings/kimonix_api_key';
-    const CONFIGPATH_KIMONIX_ORDERS_SYNC_LIMIT = 'kimonix/sync_settings/orders_sync_limit';
-    const CONFIGPATH_KIMONIX_PRODUCTS_SYNC_LIMIT = 'kimonix/sync_settings/products_sync_limit';
-    const CONFIGPATH_KIMONIX_STORE_ID = 'kimonix/store/kimonix_store_id';
-    const CONFIGPATH_KIMONIX_ALLOW_DATA_SENDING = 'kimonix/store/allow_data_sending';
-    const CONFIGPATH_KIMONIX_DATA_PERIOD_DAYS = 'kimonix/store/data_period_days';
-    const CONFIGPATH_KIMONIX_IS_SETUP_FINISHED = 'kimonix/store/setup_finished';
+    public const CONFIGPATH_KIMONIX_ENABLED = 'kimonix/general_settings/enabled';
+    public const CONFIGPATH_KIMONIX_DEBUG = 'kimonix/general_settings/debug';
+    public const CONFIGPATH_KIMONIX_API_KEY = 'kimonix/general_settings/kimonix_api_key';
+    public const CONFIGPATH_KIMONIX_ORDERS_SYNC_LIMIT = 'kimonix/sync_settings/orders_sync_limit';
+    public const CONFIGPATH_KIMONIX_PRODUCTS_SYNC_LIMIT = 'kimonix/sync_settings/products_sync_limit';
+    public const CONFIGPATH_KIMONIX_STORE_ID = 'kimonix/store/kimonix_store_id';
+    public const CONFIGPATH_KIMONIX_ALLOW_DATA_SENDING = 'kimonix/store/allow_data_sending';
+    public const CONFIGPATH_KIMONIX_DATA_PERIOD_DAYS = 'kimonix/store/data_period_days';
+    public const CONFIGPATH_KIMONIX_IS_SETUP_FINISHED = 'kimonix/store/setup_finished';
 
     /**
      * Scope config object.
@@ -152,8 +152,8 @@ class Config
      */
     private function getConfigValue($fieldKey, $scope = ScopeInterface::SCOPE_STORE, $scopeId = null)
     {
-        if (!$scope && $this->isSingleStoreMode()) {
-            return $this->scopeConfig->getValue($this->getConfigPath() . $fieldKey);
+        if (!$scope && $this->storeManager->isSingleStoreMode()) {
+            return $this->scopeConfig->getValue($fieldKey);
         }
         return $this->scopeConfig->getValue(
             $fieldKey,
